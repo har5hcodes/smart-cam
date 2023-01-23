@@ -1,3 +1,4 @@
+import { removeStopwords, eng, fra } from "stopword";
 import React from "react";
 import { Link } from "react-router-dom";
 import {
@@ -43,20 +44,25 @@ const VideoCard = ({
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  const tagsList = [];
   const description = snippet.description.slice(0, 45);
-  let tag = "";
-  for (let i = 0; i < description.length; i++) {
-    if (description[i] !== " ") {
-      tag += description[i];
-    } else {
-      if (tag.length > 0) {
-        tag = tag.split("").reverse().join("");
-        tagsList.push(tag);
-      }
-      tag = "";
-    }
-  }
+  console.log(description);
+  const { removeStopwords } = require("stopword");
+  const oldString = description.split(" ");
+  const tagsList = removeStopwords(oldString);
+
+  // putting tags by reversing every word in the videos description
+  // let tag = "";
+  // for (let i = 0; i < description.length; i++) {
+  //   if (description[i] !== " ") {
+  //     tag += description[i];
+  //   } else {
+  //     if (tag.length > 0) {
+  //       tag = tag.split("").reverse().join("");
+  //       tagsList.push(tag);
+  //     }
+  //     tag = "";
+  //   }
+  // }
 
   return (
     <Card
@@ -85,7 +91,7 @@ const VideoCard = ({
                   marginRight: "4px",
                   padding: "2px 7px",
                   borderRadius: "50px",
-                  backgroundColor: "#FF5C5C",  
+                  backgroundColor: "#FF5C5C",
                 }}
               >
                 {/* {snippet?.title.slice(0, 60) || demoVideoTitle.slice(0, 60)} */}
