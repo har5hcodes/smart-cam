@@ -1,0 +1,409 @@
+{% load displaycomments %}
+{% load bootstrap4 %}
+{% load icons %}
+
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Code reviews for interviews</title>
+ <meta charset="utf-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1">
+ <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+ <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" />
+
+ <!--
+ <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+
+ 	<link href="https://myCDN.com/prism@v1.x/themes/prism.css" rel="stylesheet" />
+	<script src="https://myCDN.com/prism@v1.x/components/prism-core.min.js"></script>
+	<script src="https://myCDN.com/prism@v1.x/plugins/autoloader/prism-autoloader.min.js"></script>
+
+ -->
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.9/styles/default.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.9/highlight.min.js"></script>
+ <script charset="UTF-8"
+ src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/go.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<style>
+
+
+body {
+font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    background-color: #ffffff;
+    font-size: 16px;
+    /*
+       line-height: 1.428571429;
+       */
+    color: #000;
+    -webkit-font-smoothing:antialiased;
+    cursor: text;
+}
+
+pre {
+  margin-bottom:0px;
+  margin-top:0px;
+}
+
+.btn {
+    padding-bottom: 0px;
+    padding-top: 0px;
+}
+
+.codelinenum {
+color: #aa2e2e;
+
+}
+.snippet {
+  border: 1px solid #999;
+}
+
+.hljs {
+ padding-top:0px;
+ padding-bottom:0px;
+}
+
+/*------------*/
+
+  .menubutton {
+    text-align: right;
+    font-size: 25px;
+  }
+
+  .topnavbar {
+    padding: 15px 0px;
+
+  }
+
+  .searchrow {
+text-align: center;
+  }
+
+.searchbox {
+        border: 1px solid lightgrey;
+        margin: auto;
+        width : 300px;
+        border-radius: 60px;
+}
+
+.searchinput {
+border:none;
+padding: 15px;
+  }
+
+.searchrow button {
+border: none;
+background-color: transparent;
+}
+
+.searchbox form {
+    margin: 0px;
+}
+
+.mybuttonclass {
+  border-radius: 20px;
+  padding-left: 30px;
+  padding-right: 30px;
+os.environ['EMAIL_ADDRESS']
+  padding-top: 5px;
+  padding-bottom: 5px;
+  background-image: linear-gradient(to right, #677ae3 , #7550aa);
+  color: #fff;
+  margin-right: 20px;
+  box-shadow: 5px 10px;
+}
+/*END THEME */
+
+
+/*https://www.sylvaindurand.org/using-css-to-add-line-numbering/*/
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+   <nav class="topnavbar">
+   <div class="row">
+   <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+      <a class="brand" href="/">InterviewBlindspots</a>
+   </div>
+   <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 menubutton">
+
+     {% block content %}
+     {% if user.is_authenticated %}
+       Hi {{ user.username }}!
+        <p><a href="{% url 'logout' %}">Log Out</a></p>
+     {% else %}
+       <a href="/accounts/login" role="button">     <button class="btn btn-outline-success mybuttonclass" type="submit" data-toggle="modal"> Login/Signup </button></a> 
+     {% endif %}
+     {% endblock %}
+
+      <!--
+      <button class="btn btn-outline-success mybuttonclass" type="submit" data-toggle="modal" data-target="#ModalLoginForm">Login/Signup</button>
+     -->
+     <i class="fa fa-bars menubars"></i>
+   </div>
+   </nav>
+
+  <div class="searchrow">
+    <div class="searchbox">
+    <form class="">
+      <input class="searchinput" type="search" placeholder="Search For Code Reviews" aria-label="">
+      <button class=searchbutton" type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>
+    </form>
+    </div>
+  </div>
+
+   <nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Blog</a>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          About Us
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="#">Action</a>
+          <a class="dropdown-item" href="#">Another action</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="#">Something else here</a>
+        </div>
+      </li>
+      <!--li class="nav-item">
+        <a class="nav-link disabled" href="#">Disabled</a>
+      </li-->
+    </ul>
+      <button class="btn btn-outline-success " type="submit">New Review</button>
+  </div>
+    </nav>
+
+  <div class="snippet" id="snippetId{{snippetId}}">
+  {% for line in codelines %}
+  <pre class="hljs java"><a href="#" class="btn codelinenum" data-toggle="modal" id="codelinenum{{ forloop.counter }}" data-target="#ModalCommentForm">{{ forloop.counter }}</a><span class="codeline">{{ line }}</span></pre><div class="commentbox" style="border: solid 0px black; background-color:yellow">{{ snippetId | displayCommentsFilter:forloop.counter }}</div>
+  {% endfor %}
+  </div>
+
+  <!-- The Modal -->
+  <div class="modal" id="myModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+
+        <!-- Modal Header -->
+        <!-- Modal body -->
+        <div class="modal-body">
+            <div class="form-group">
+                <label for="comment">Comment:</label>
+                <textarea class="form-control" rows="5" id="comment0"></textarea>
+            </div>
+        </div>
+
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Submit</button>
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Save Draft</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <button class="btn btn-outline-success my-2 "  data-toggle="modal" data-target="#ModalCommentForm" type="submit">Additional Comments</button>
+
+  <div class="row">
+          <div class="col-lg-3">
+          </div>
+  <!--This code should be invoked when "New Review" button is pressed at the top of the page. -->
+  <div class="newSnippetForm col-lg-6">
+          <form action="{% url 'addSnippet' %}" method="post" class="snippetForm">
+      {% csrf_token %}
+      {% bootstrap_form snippetForm %}
+      {% buttons %}
+          <button type="submit" class="btn btn-primary btn-lg">
+              {% icon 'star' %} Add new code for review
+          </button>
+      {% endbuttons %}
+    </form>
+  </div>
+          <div class="col-lg-3">
+          </div>
+
+  </div>
+
+
+<footer class="bd-footer text-muted">
+  <div class="container-fluid p-3 p-md-5">
+    <ul class="bd-footer-links">
+      <li><a href="#">Ruby Interview Code Reviews</a></li>
+      <li><a href="#">Java Interview Code Reviews</a></li>
+      <li><a href="#">Python Interview Code Reviews</a></li>
+      <li><a href="#">System Design Interview Code Reviews</a></li>
+      <li><a href="#">FrontEnd Interview Code Reviews</a></li>
+      <li><a href="#">TopInterview Code Reviews</a></li>
+      <li><a href="#">Most critical Interview Code Reviews</a></li>
+    </ul>
+    <p><a href="https://interviewblindspots.com">InterviewBlindspots.com</a> is a code review site with focus on software engineer interviews. Just like stackoverflow, you can paste your code and one of our volunteers will review the code. Watch this video to get started. You can view all the public code reviews so far here. Click on the links at the top  to look at top reviews so far. Happy interviewing!  <a href="https://github.com/twbs/bootstrap/graphs/contributors">our contributors</a>.</p>
+    <p>Privacy Policy. As of now, we do not collect any private data except for email address. We do not sell your data to anyone. We do not even have a business model. 
+    All user contributions are licensed under cc by-sa 4.0 with attribution required. This means you are free to copy and share them. Just please provide an attribution by mentioning the link to original review.
+    Currently v4.4.1. Code licensed <a href="https://github.com/twbs/bootstrap/blob/master/LICENSE" target="_blank" rel="license noopener">MIT</a>, docs <a href="https://creativecommons.org/licenses/by/3.0/" target="_blank" rel="license noopener">CC BY 3.0</a>.</p>
+    As you can see, the looks of the site are not great. Thats because we are backend engineers with experience in managing 1000s of servers but (almost) no experience in frontend and its intricacies. We are looking for a frontend engineer who take this site to the next level. If you are interested, please contact us. Equity only!
+  </div>
+</footer>
+
+</div> <!--End container div. -->
+
+<!-- Modal HTML Markup -->
+<div id="ModalLoginForm" class="modal fade">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title">Login</h1>
+            </div>
+            <div class="modal-body">
+                <form role="form" method="POST" action="">
+                    <input type="hidden" name="_token" value="">
+                    <div class="form-group">
+                        <label class="control-label">E-Mail Address</label>
+                        <div>
+                            <input type="email" class="form-control input-lg" name="email" value="">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Password</label>
+                        <div>
+                            <input type="password" class="form-control input-lg" name="password">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="remember"> Remember Me
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div>
+                            <button type="submit" class="btn btn-success">Login</button>
+
+                            <a class="btn btn-link" href="">Forgot Your Password?</a>
+                        </div>
+                    </div>
+                </form>
+                <h1>Or Signup!</h1>
+                <form role="form" method="POST" action="">
+                    <input type="hidden" name="_token" value="">
+                    <div class="form-group">
+                        <label class="control-label">Username</label>
+                        <div>
+                            <input type="text" class="form-control input-lg" name="name" value="">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">E-Mail Address</label>
+                        <div>
+                            <input type="email" class="form-control input-lg" name="email" value="">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Password</label>
+                        <div>
+                            <input type="password" class="form-control input-lg" name="password">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Confirm Password</label>
+                        <div>
+                            <input type="password" class="form-control input-lg" name="password_confirmation">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div>
+                            <button type="submit" class="btn btn-success">
+                                Register
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<!-- Modal HTML Markup -->
+<div id="ModalExample" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">See more of this awesome website by logging in</h4>
+            </div>
+            <div class="modal-body">
+                <p class="lead text-xs-center">It only takes a few seconds to level up!</p>
+                <div class="lead text-xs-center"><a class="btn btn-info" href="/auth/register">Create Account</a> or
+                    <a class="btn btn-success" href="/auth/login">Sign In</a></div>
+            </div>
+            <div class="modal-footer">
+                :-)
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<!-- Modal HTML Markup -->
+<div id="ModalCommentForm" class="modal fade">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <form action="" method="post" class="commentForm">
+                   {% csrf_token %}
+                   {% bootstrap_form commentForm %}
+                   {% buttons %}
+                       <button type="submit" class="btn btn-success btn-primary">
+                           {% icon 'star' %} Save Comments
+                       </button>
+                   {% endbuttons %}
+                </form>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<script>
+$(document).ready(function(){
+  $("#commentAtLineNum").click(function(){
+    $('#modalCommentForm').modal('toggle');
+    return false;
+  });
+
+    /*Set value of linenum and the text*/
+    $('.codelinenum').click(function(event) {
+        var id = $(".snippet").attr('id').replace("snippetId","");
+        $('#id_snippetId').val(id);
+    });
+
+    $('.codelinenum').click(function(event) {
+        var id = $(this).attr('id').replace("codelinenum","");
+        $('#id_linenum').val(id);
+    });
+    //$('#modalCommentForm').modal('toggle');
+});
+
+</script>
+
+
+</body>
+
+
+</html>
+
